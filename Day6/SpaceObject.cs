@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace Day6
 {
@@ -34,7 +34,7 @@ namespace Day6
         {
             var parentA = Parent;
             var parentB = other.Parent;
-            
+
             do
             {
                 do
@@ -47,9 +47,28 @@ namespace Day6
 
                     parentB = parentB?.Parent;
                 } while (parentB != null);
+
                 parentA = parentA.Parent;
             } while (parentA != null);
-            
+
+            return null;
+        }
+
+        public SpaceObject CommonParent(SpaceObject other)
+        {
+            var rootLineSelf = RootLine();
+            var rootLineOther = other.RootLine();
+
+            foreach (var element in rootLineSelf)
+            {
+                Console.WriteLine(element.Key + " => " + (rootLineOther.ContainsKey(element.Key) ? "YES" : "NO"));
+
+                if (rootLineOther.ContainsKey(element.Key))
+                {
+                    return element.Value;
+                }
+            }
+
             return null;
         }
 
@@ -66,6 +85,25 @@ namespace Day6
             }
 
             return Parent.HasParent(parent);
+        }
+
+        public Dictionary<string, SpaceObject> RootLine()
+        {
+            var parents = new Dictionary<string, SpaceObject>();
+
+            var current = Parent;
+
+            while (current != null)
+            {
+                if (current.Parent != null)
+                {
+                    parents[current.Id] = current;
+                }
+
+                current = current.Parent;
+            }
+
+            return parents;
         }
     }
 }

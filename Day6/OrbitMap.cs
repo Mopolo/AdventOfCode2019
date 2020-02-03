@@ -50,21 +50,37 @@ namespace Day6
             return Objects.Sum(o => o.Value.IndirectOrbits());
         }
 
-        public int MinimumTransfers(string a, string b)
+        public int MinimumOrbitalTransfers(string a, String b)
         {
             var transfers = 0;
 
-            var objectA = Objects[a];
-            var objectB = Objects[b];
-
-            var pointer = objectA;
-
-            do
+            var objectA = Objects[a].Parent;
+            var objectB = Objects[b].Parent;
+            
+            var rootLineA = objectA.RootLine();
+            var rootLineB = objectB.RootLine();
+            
+            foreach (var element in rootLineA)
             {
-                
-            } while (!objectA.HasParent(objectB.Parent));
+                transfers++;
 
-        return transfers;
+                if (rootLineB.ContainsKey(element.Key))
+                {
+                    break;
+                }
+            }
+
+            foreach (var element in rootLineB)
+            {
+                transfers++;
+
+                if (rootLineA.ContainsKey(element.Key))
+                {
+                    break;
+                }
+            }
+
+            return transfers;
         }
     }
 }

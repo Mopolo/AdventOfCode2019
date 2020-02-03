@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace Day6
 {
@@ -6,17 +7,15 @@ namespace Day6
     {
         static void Main(string[] args)
         {
-            var input = System.IO.File.ReadAllText(@"C:\Users\nboiron\RiderProjects\ConsoleApp1\Day6\input.txt");
+            var sourcePath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..\input.txt"));
+            var input = File.ReadAllText(sourcePath);
 
             var map = new OrbitMap(input);
 
             var a = map.Objects["YOU"];
             var b = map.Objects["SAN"];
             
-            Console.WriteLine(a.FirstCommonParent(b));
-            Console.WriteLine(b.FirstCommonParent(a));
-
-            // Console.WriteLine(map.TotalOrbits());
+            Console.WriteLine(map.MinimumOrbitalTransfers("YOU", "SAN"));
         }
     }
 }
